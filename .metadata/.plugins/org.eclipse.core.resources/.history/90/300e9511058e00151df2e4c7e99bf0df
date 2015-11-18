@@ -1,0 +1,27 @@
+package fichiers;
+
+public class Instance {
+
+	private Entrepot entrepot;
+	private Robot robot;
+
+	public Instance(Entrepot entrepot,Robot robot){
+		this.entrepot = entrepot;
+		this.robot = robot;		
+	}
+	
+	/***Getters***/
+	public int[][] getMatrice(){
+		return this.matrice;
+	}
+
+	public int getLongueur() {
+		return longueur;
+	}
+
+	public int getLargeur() {
+		return largeur;
+	}
+
+	/****************************/
+}
