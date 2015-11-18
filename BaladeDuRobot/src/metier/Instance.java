@@ -21,4 +21,7 @@ public class Instance {
 	}
 	
 	/****************************/
+	public String toString(){
+		return this.entrepot.toString() +"\n"+ this.robot.toString();
+	}
 }

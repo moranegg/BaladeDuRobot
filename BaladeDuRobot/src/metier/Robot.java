@@ -38,5 +38,8 @@ public class Robot {
 		this.direction = direction;
 	}
 	/*******************************/
+	public String toString(){
+		return depart.x+' '+objectif.y+ ' '+ direction;
+	}
 
 }

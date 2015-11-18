@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.*;
 import metier.Entrepot;
+import metier.Instance;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,9 +22,10 @@ public class TestFichier {
 	}
 	
 	@Test
-	public void testCreationEntrepot(){
+	public void testCreationInstance(){
 		Fichier fich = new Fichier("Samples/uc001-test.txt");
-		assertTrue(fich.getEntrepot() instanceof Entrepot);
+		Instance i = fich.interpretationFichier();
+		System.out.print(i.toString());
 		
 		
 	}
