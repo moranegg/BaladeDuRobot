@@ -1,7 +1,9 @@
 package fichiers;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -37,6 +39,10 @@ public class Fichier {
 	public File getFichier() {
 		return fichier;
 	}
+	
+	public String getFichierToString(){
+		return fichierToString;
+	}
 	/********************************/
 
 
@@ -71,27 +77,27 @@ public class Fichier {
 	 * transformer fichier en Solution
 	 */
 	public Instance interpretationFichier(){
-		String[] tab = fichierToString.split("\n");
+		String[] complet = fichierToString.split("\n");
 		try{
 			/** interpretation entrepot**/
-			int longueur = Integer.parseInt(tab[0].split(" ")[0]);
+			int longueur = Integer.parseInt(complet[0].split(" ")[0]);
 			//gestion erreur longeur n'est ppas un entier
-			int largeur= Integer.parseInt(tab[0].split(" ")[1]);
+			int largeur= Integer.parseInt(complet[0].split(" ")[1]);
 			//gestion erreur largeur n'est ppas un entier
 			int[][] matrice = new int[longueur][largeur];
 			//gestion erreur matrice dans le fichier n'est pas adapter au definitions
-			for(int i=1; i< longueur; i++){
-				String[] ligne = tab[i].split(" ");
+			for(int i=1; i<= longueur; i++){
+				String[] ligne = complet[i].split(" ");
 				for(int j=0; j< largeur; j++){
 					
 					matrice[i-1][j] = Integer.parseInt(ligne[j]);
-					System.out.print(matrice[i-1][j] );
+					
 				}
-				System.out.print('\n' );
+				
 			}
 			Entrepot entrepot= new Entrepot(longueur, largeur, matrice);
 			/** interpretation robot**/
-			String[] r = tab[longueur+1].split(" ");
+			String[] r = complet[longueur+1].split(" ");
 			int departLigne= Integer.parseInt(r[0]);
 			int departColonne= Integer.parseInt(r[1]);
 			int objectifLigne= Integer.parseInt(r[2]);
@@ -112,9 +118,30 @@ public class Fichier {
 	/**
 	 * enregistre une instance dans un fichier
 	 */
-	public boolean enregistre(Instance i , String nomFichier){
+	public static boolean enregistre(Instance i , String nomFichier){
+		BufferedWriter writer = null;
+		try
+		{
+		    writer = new BufferedWriter( new FileWriter( nomFichier));
+		    writer.write( i.toString());
+		    return true;
 
-		return true;
+		}
+		catch ( IOException e)
+		{
+			return false;
+		}
+		finally
+		{
+		    try
+		    {
+		        if ( writer != null)
+		        writer.close( );
+		    }
+		    catch ( IOException e)
+		    {
+		    }
+		}
 	}
 
 

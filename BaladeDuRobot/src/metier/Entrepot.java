@@ -30,13 +30,14 @@ public class Entrepot {
 	public String toString(){
 		String retour= this.longueur+ " "+this.largeur;
 		for(int i=0; i< longueur; i++){
-			
-			for(int j=0; j< largeur; j++){
-				System.out.print(matrice[i][j] );
-				retour += matrice[i][j]+ ' ';
-			}
 			retour += "\n";
-			System.out.print("\n" );
+			for(int j=0; j< largeur; j++){
+				//System.out.print(matrice[i][j] );
+				retour += matrice[i][j];
+				retour += " ";
+			}
+			//retour += "\n";
+			//System.out.print("\n" );
 		}
 		return retour;
 	}

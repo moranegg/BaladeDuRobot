@@ -10,22 +10,33 @@ import org.junit.Test;
 import fichiers.Fichier;
 
 public class TestFichier {
-
+	Fichier fich;
+	Instance i;
+	
+	
+	
+	@Before
+	public void initialization(){
+		fich = new Fichier("Samples/uc001-test.txt");
+		i = fich.interpretationFichier();
+	}
 	@Test
 	public void testLectureFichier() {
-		
-		Fichier fich = new Fichier("Samples/uc001-test.txt");
-		
 		assertTrue(fich.getFichier().exists());
 		
-		fich.afficherStream();
+		//fich.afficherStream();
 	}
 	
 	@Test
 	public void testCreationInstance(){
-		Fichier fich = new Fichier("Samples/uc001-test.txt");
-		Instance i = fich.interpretationFichier();
-		System.out.print(i.toString());
+		assertTrue(i.getEntrepot()!=null);
+		assertTrue(i.getRobot()!=null);
+			
+	}
+	
+	@Test
+	public void ecritureFichier(){
+		Fichier.enregistre(i,"Samples/testEcriturefichier");
 		
 		
 	}
