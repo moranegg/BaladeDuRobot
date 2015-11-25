@@ -5,7 +5,7 @@ public class Entrepot {
 	private int[][] matrice;
 	private int longueur;
 	private int largeur;
-	private Robot robot;
+	
 
 	public Entrepot(int lo, int la, int[][] m){
 		this.largeur = la;
