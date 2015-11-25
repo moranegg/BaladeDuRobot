@@ -102,12 +102,15 @@ public class Fichier {
 			int departColonne= Integer.parseInt(r[1]);
 			int objectifLigne= Integer.parseInt(r[2]);
 			int objectifColonne= Integer.parseInt(r[3]);
-			String direction = r[4];
-			Robot robot= new Robot(departLigne, departColonne, objectifLigne,
-					objectifColonne, direction);
-
-			Instance instance= new Instance(entrepot,robot);
-			return instance;
+			String d = r[4];
+			if(d.equals("sud")||d.equals("nord")||d.equals("ouest")|| d.equals("est")){
+				Robot robot= new Robot(departLigne, departColonne, objectifLigne,
+						objectifColonne, d);
+				Instance instance= new Instance(entrepot,robot);
+				return instance;
+			}else{
+				throw new Exception();
+			}
 
 		}catch(Exception e){
 			e.printStackTrace();

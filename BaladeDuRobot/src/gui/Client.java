@@ -14,7 +14,8 @@ public class Client {
 		Graphe g= new Graphe(i);
 		g.graphGenerate();
 		g.graphDisplay();
-		g.computePath();
+		g.pathCompute();
 		System.out.println(i.printSolution());
+		IHM ihm= new IHM();
 	}
 }
