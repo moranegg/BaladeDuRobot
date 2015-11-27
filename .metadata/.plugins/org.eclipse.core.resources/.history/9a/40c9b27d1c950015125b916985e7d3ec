@@ -1,0 +1,49 @@
+package graphes;
+
+
+import java.io.File;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+
+public class BFS {
+
+	private Graph graph;
+	private String source;
+	
+	public BFS(){
+	}
+	
+	public void init(Graph graph){
+		this.graph = graph;
+	}
+	
+	public void setSource(String node){
+		this.source = graph.getNode(source);
+	}
+	
+	public void compute(){
+		  /*  f = CreerFile();
+			  f.enfiler(s);
+			  marquer(s);
+			  TANT-QUE NON f.vide() FAIRE
+			      s = f.defiler();
+			      afficher(s);    
+			      POUR TOUT voisin de s FAIRE
+			           SI voisin non marqué FAIRE
+			                f.enfiler(voisin);
+			                marquer(voisin);
+			           FIN SI
+			      FIN POUR TOUT 
+			  FIN TANT QUE    */
+		
+		Queue file = new LinkedList();
+		file.add(source);
+	}
+	
+	
+	
+	
+}

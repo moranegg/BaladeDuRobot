@@ -1,0 +1,11 @@
+package graphes;
+import metier.Instance;
+
+import org.graphstream.graph.*;
+
+public class Graphe {
+	private Instance instance;
+	
+	
+	
+}

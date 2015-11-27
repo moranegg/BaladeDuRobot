@@ -1,0 +1,23 @@
+package graphes;
+
+import metier.Instance;
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
+
+public class BFS {
+
+	private Graph graph;
+	
+	public BFS(Graph graph){
+		this.graph = new Graph();
+	}
+	
+	public compute(){
+		this.graph = graph;
+	}
+	
+	
+	
+	
+}

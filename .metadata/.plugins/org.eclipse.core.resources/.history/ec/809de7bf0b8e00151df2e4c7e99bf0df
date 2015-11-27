@@ -1,0 +1,18 @@
+package tests;
+
+import org.junit.Test;
+
+import graphes.Graphe;
+
+public class TestGraphe {
+	
+	@Test
+	public void testGraphe(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Graphe graphe = new Graphe(null);
+		graphe.afficher();
+
+	}
+	
+}

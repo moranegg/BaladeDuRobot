@@ -1,0 +1,14 @@
+package graphes;
+
+import metier.Instance;
+
+import org.graphstream.graph.implementations.SingleGraph;
+
+public class BFS {
+
+	public Graphe(Instance instance){
+		this.instance = instance;
+		this.graph = new SingleGraph("BaladeDuRobot");
+	}
+	
+}

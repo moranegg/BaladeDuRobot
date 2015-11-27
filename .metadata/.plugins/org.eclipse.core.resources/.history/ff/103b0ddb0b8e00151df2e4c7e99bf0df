@@ -1,0 +1,41 @@
+package tests;
+
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.junit.Test;
+
+import graphes.Graphe;
+
+public class TestGraphe {
+	
+	@Test
+	public void testGraphStream() {
+		// TODO Auto-generated method stub
+		
+		Graph graph = new SingleGraph("example");
+		
+		graph.addNode("A").addAttribute("xy", 0, 1);
+        graph.addNode("B").addAttribute("xy", 1, 2);
+        graph.addNode("C").addAttribute("xy", 1, 1);
+        graph.addNode("D").addAttribute("xy", 1, 0);
+        graph.addNode("E").addAttribute("xy", 2, 2);
+        graph.addNode("F").addAttribute("xy", 2, 1);
+        graph.addNode("G").addAttribute("xy", 2, 0);
+        graph.addEdge("AB", "A", "B").addAttribute("length", 14);
+        graph.addEdge("AC", "A", "C").addAttribute("length", 9);
+        graph.addEdge("AD", "A", "D").addAttribute("length", 7);
+        graph.addEdge("BC", "B", "C").addAttribute("length", 2);
+        graph.addEdge("CD", "C", "D").addAttribute("length", 10);
+        graph.addEdge("BE", "B", "E").addAttribute("length", 9);
+        graph.addEdge("CF", "C", "F").addAttribute("length", 11);
+        graph.addEdge("DF", "D", "F").addAttribute("length", 15);
+        graph.addEdge("EF", "E", "F").addAttribute("length", 6);
+        for (Node n : graph)
+                n.addAttribute("label", n.getId());
+        for (Edge e : graph.getEachEdge())
+                e.addAttribute("label", "" + (int) e.getNumber("length"));
+
+	}
+	
+}

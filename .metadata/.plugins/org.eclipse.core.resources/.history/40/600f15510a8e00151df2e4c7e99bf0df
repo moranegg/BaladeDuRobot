@@ -1,0 +1,47 @@
+package graphes;
+import metier.Entrepot;
+import metier.Instance;
+import metier.Robot;
+
+import org.graphstream.graph.*;
+import org.graphstream.graph.implementations.SingleGraph;
+
+public class Graphe {
+	private Instance instance;
+	private Graph graph;
+	
+	public Graphe(Instance instance){
+		this.instance = instance;
+		this.graph = new SingleGraph("example");	
+		
+		this.graph.addNode("A").addAttribute("xy", 0, 1);
+        this.graph.addNode("B").addAttribute("xy", 1, 2);
+        this.graph.addNode("C").addAttribute("xy", 1, 1);
+        this.graph.addNode("D").addAttribute("xy", 1, 0);
+        this.graph.addNode("E").addAttribute("xy", 2, 2);
+        this.graph.addNode("F").addAttribute("xy", 2, 1);
+        this.graph.addNode("G").addAttribute("xy", 2, 0);
+        this.graph.addEdge("AB", "A", "B").addAttribute("length", 14);
+        this.graph.addEdge("AC", "A", "C").addAttribute("length", 9);
+        this.graph.addEdge("AD", "A", "D").addAttribute("length", 7);
+        this.graph.addEdge("BC", "B", "C").addAttribute("length", 2);
+        this.graph.addEdge("CD", "C", "D").addAttribute("length", 10);
+        this.graph.addEdge("BE", "B", "E").addAttribute("length", 9);
+        this.graph.addEdge("CF", "C", "F").addAttribute("length", 11);
+        this.graph.addEdge("DF", "D", "F").addAttribute("length", 15);
+        this.graph.addEdge("EF", "E", "F").addAttribute("length", 6);
+        for (Node n : this.graph)
+                n.addAttribute("label", n.getId());
+        for (Edge e : this.graph.getEachEdge())
+                e.addAttribute("label", "" + (int) e.getNumber("length"));
+	}
+	
+	public void afficher(){
+	    graph.setStrict(false);
+	    graph.setAutoCreate(true);
+	    graph.display();
+		graph.display();
+	}
+	
+	
+}

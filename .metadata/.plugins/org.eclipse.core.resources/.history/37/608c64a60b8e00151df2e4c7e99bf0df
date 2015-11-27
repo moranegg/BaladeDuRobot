@@ -1,0 +1,15 @@
+package tests;
+
+import graphes.Graphe;
+
+public class TestGraphe {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		Graphe graphe = new Graphe(null);
+		graphe.afficher();
+
+	}
+	
+}

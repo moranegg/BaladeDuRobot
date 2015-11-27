@@ -1,0 +1,20 @@
+package tests;
+
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import fichiers.Fichier;
+
+public class TestMetier {
+
+	
+	@Test
+	public void testLectureFichier() {
+		
+		Fichier fich = new Fichier("Samples/uc001-test.txt");
+		
+		assertTrue(fich.getFichier().exists());
+		
+		fich.afficherStream();
+	}
+	
+}

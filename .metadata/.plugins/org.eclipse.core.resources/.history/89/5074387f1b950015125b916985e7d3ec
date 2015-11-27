@@ -1,0 +1,30 @@
+package graphes;
+
+
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+
+public class BFS {
+
+	private Graph graph;
+	private String source;
+	
+	public BFS(){
+	}
+	
+	public void init(Graph graph){
+		this.graph = graph;
+	}
+	
+	public void setSource(String node){
+		this.source = graph.getNode(source);
+	}
+	
+	public void compute(){
+
+	}
+	
+	
+	
+	
+}

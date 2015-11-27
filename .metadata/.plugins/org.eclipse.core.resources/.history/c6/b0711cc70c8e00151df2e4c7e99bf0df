@@ -1,0 +1,18 @@
+package tests;
+
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import fichiers.Fichier;
+
+public class TestMetier {
+
+	
+	@Test
+	public void testGenerationGraphe() {
+		
+		Fichier fich = new Fichier("Samples/uc001-test.txt");
+		
+
+	}
+	
+}

@@ -47,10 +47,15 @@ public class Graphe {
 							break;
 						graph.addEdge(i+"_"+j+"_"+(i+k)+"_"+j+"_sud", i+"_"+j+"_sud", (i+k)+"_"+j+"_sud",true).addAttribute("temps", 1);;
 					}
-					graph.addEdge(i+"_"+j+"_ne", i+"_"+j+"_nord", i+"_"+j+"_est").addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_no", i+"_"+j+"_nord", i+"_"+j+"_ouest").addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_se", i+"_"+j+"_sud", i+"_"+j+"_est").addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_so", i+"_"+j+"_sud", i+"_"+j+"_ouest").addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_ne", i+"_"+j+"_nord", i+"_"+j+"_est",true).addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_no", i+"_"+j+"_nord", i+"_"+j+"_ouest",true).addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_se", i+"_"+j+"_sud", i+"_"+j+"_est",true).addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_so", i+"_"+j+"_sud", i+"_"+j+"_ouest",true).addAttribute("temps", 1);
+					
+					graph.addEdge(i+"_"+j+"_en", i+"_"+j+"_est", i+"_"+j+"_nord", true).addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_on", i+"_"+j+"_ouest", i+"_"+j+"_nord",true).addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_es", i+"_"+j+"_est",i+"_"+j+"_sud", true).addAttribute("temps", 1);
+					graph.addEdge(i+"_"+j+"_os", i+"_"+j+"_ouest", i+"_"+j+"_sud",true).addAttribute("temps", 1);
 				}
 							
 			}
@@ -95,16 +100,27 @@ public class Graphe {
 	}
 	
 	public String pathCompute(){
-		Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, "temps");
+		BFS bfs = new BFS();
+		
+		bfs.init(graph);
+		String source = instance.getRobot().getDepart().x+"_"+instance.getRobot().getDepart().y+"_"+instance.getRobot().getDirection();
+
+		bfs.setSource(graph.getNode(source));
+        bfs.compute();
+
+		
+		/*Dijkstra dijkstra = new Dijkstra(Dijkstra.Element.EDGE, null, "temps");
 		dijkstra.init(graph);
 		String source = instance.getRobot().getDepart().x+"_"+instance.getRobot().getDepart().y+"_"+instance.getRobot().getDirection();
 		System.out.println("Source : "+source);
         dijkstra.setSource(graph.getNode(source));
         dijkstra.compute();
-		String dest = instance.getRobot().getObjectif().x+"_"+instance.getRobot().getObjectif().y+"_"+instance.getRobot().getDirection();
-
+		
         // Print the shortest path from A to B
-        return dijkstra.getPath(graph.getNode(dest)).toString();
+        return dijkstra.getPath(graph.getNode(dest)).toString();*/
+        
+        String dest = instance.getRobot().getObjectif().x+"_"+instance.getRobot().getObjectif().y+"_"+instance.getRobot().getDirection();
+        return bfs.getPath(graph.getNode(dest));
 	}
 	
 	public void graphDisplay(){
