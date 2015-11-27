@@ -146,6 +146,38 @@ public class Fichier {
 		    }
 		}
 	}
+	
+	/**
+	 * enregistre la solution d'une instance dans un fichier
+	 */
+	public static boolean enregistreSolution(Instance i, String nomFichier){
+		BufferedWriter writer = null;
+		try
+		{
+		    writer = new BufferedWriter( new FileWriter( nomFichier));
+		    if(i !=null){
+		    	writer.write( i.printSolution());
+		    	return true;
+		    }else{
+		    	return false;
+		    }
+		}
+		catch ( IOException e)
+		{
+			return false;
+		}
+		finally
+		{
+		    try
+		    {
+		        if ( writer != null)
+		        writer.close( );
+		    }
+		    catch ( IOException e)
+		    {
+		    }
+		}
+	}
 
 
 }

@@ -15,12 +15,19 @@ import metier.Robot;
  */
 public class GestionGui {
 	Instance instance;
-
+	Fichier fichierInstance;
+	IHM2 ihm;
+	
+	public GestionGui(IHM2 ihm){
+		this.ihm =ihm;
+		
+	}
 	public void chargerFichier(String nomFichier) {
-		Fichier fich = new Fichier(nomFichier);
+		fichierInstance = new Fichier(nomFichier);
 		try{
-			instance = fich.interpretationFichier();
+			instance = fichierInstance.interpretationFichier();
 			//System.out.print(instance.toString());
+			miseAJourSolution();
 			genererGraphe(instance);
 			
 		}catch(Exception e){
@@ -57,6 +64,7 @@ public class GestionGui {
 			Robot robot = new Robot(dc,dl,ac,al,direction);
 			Entrepot entrepot = new Entrepot(lo,la, matrice);
 			Instance instance = new Instance(entrepot,robot);
+			miseAJourSolution();
 			genererGraphe(instance);
 			
 		}catch(Exception e){
@@ -73,5 +81,18 @@ public class GestionGui {
 		g.graphDisplay();
 		g.pathCompute();
 		
+	}
+
+	public void genererFichier() {
+		if(this.fichierInstance!= null){
+			Fichier.enregistreSolution(instance, "Samples/solution-+"+fichierInstance.getNomPhysique());
+		} else {
+			Fichier.enregistreSolution(instance, "Samples/solution.txt");
+			
+		}
+		
+	}
+	public void miseAJourSolution(){
+		ihm.getLbsol().setText(instance.printSolution());
 	}
 }

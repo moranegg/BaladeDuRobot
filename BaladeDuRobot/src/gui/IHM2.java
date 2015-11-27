@@ -32,13 +32,14 @@ public class IHM2 extends JFrame {
 	private JTextField direction;
 	private JTextField arriveeLigne;
 	private GestionGui gestion;
+	private JLabel lblSol;
 	//private JTextField filename = new JTextField(), dir = new JTextField();
 
 	/**
 	 * Create the applet.
 	 */
-	public IHM2(GestionGui gestion) {
-		this.gestion = gestion;
+	public IHM2() {
+		
 		 
 		
 		
@@ -157,8 +158,23 @@ public class IHM2 extends JFrame {
 		
 		
 		getContentPane().add(btnValider, "10, 22");
+		
+		JLabel lblSolution = new JLabel("Solution:");
+		getContentPane().add(lblSolution, "2, 24");
+		
+		lblSol = new JLabel("");
+		getContentPane().add(lblSol, "4, 24");
+		
+		JButton btnGenrerFichier = new JButton("Générer fichier");
+		btnGenrerFichier.setEnabled(true);//TODO mettre à false avant de charger fichier ou valider
+		btnGenrerFichier.addActionListener(new genererFichier());
+		getContentPane().add(btnGenrerFichier, "10, 24");
 		this.pack();
 	}
+	public void setGestion(GestionGui gestion){
+		this.gestion = gestion;
+	}
+
 	class ChargerFichier implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	    	JFileChooser c = new JFileChooser();
@@ -167,7 +183,10 @@ public class IHM2 extends JFrame {
 		      if (rVal == JFileChooser.APPROVE_OPTION) {
 		    	 String file=c.getSelectedFile().getName();
 		    	 String dir= c.getCurrentDirectory().toString();
+		    	 //btnGenrerFichier.setEnabled(true);
 		        gestion.chargerFichier(dir+"\\"+ file);
+		        
+		        
 		      }
 		      if (rVal == JFileChooser.CANCEL_OPTION) {
 		        
@@ -177,6 +196,7 @@ public class IHM2 extends JFrame {
 	class validerEntree implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			try{
+				
 				System.out.print(longueur.getText()+" "+ largeur.getText()+" "+
 						nbObstacles.getText()+" "+departColonne.getText()+" "+
 						departLigne.getText()+" "+arriveeColonne.getText()+" "+
@@ -185,12 +205,27 @@ public class IHM2 extends JFrame {
 						nbObstacles.getText(),departColonne.getText(),
 						departLigne.getText(),arriveeColonne.getText(),
 						arriveeLigne.getText(), direction.getText());
+				
+				
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 			
 		}
  }
+	class genererFichier implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			try{
+				gestion.genererFichier();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+		}
+ }
+	public JLabel getLbsol() {
+		return this.lblSol;
+	}
 }
 				
 				

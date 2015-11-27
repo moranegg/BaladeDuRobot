@@ -4,9 +4,9 @@ package gui;
 public class Client {
 	
 	public static void main(String[] atgs){
-		
-		GestionGui ggui= new GestionGui();
-		IHM2 ihm= new IHM2(ggui);
+		IHM2 ihm= new IHM2();
+		GestionGui ggui= new GestionGui(ihm);
+		ihm.setGestion(ggui);
 		ihm.setVisible(true);
 	}
 }
