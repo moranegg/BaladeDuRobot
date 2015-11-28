@@ -14,6 +14,7 @@ public class Graphe {
 	public Graphe(Instance instance){
 		this.instance = instance;
 		this.graph = new SingleGraph("BaladeDuRobot");
+		
 	}
 	
 	private void addEdges(int[][] preGraph){
@@ -27,35 +28,35 @@ public class Graphe {
 					for(int k = 1;k<=3 && (k+j)<preGraph[0].length;k++){
 						if(graph.getNode(i+"_"+(j+k)+"_est").getAttribute("stat").equals("unallowed"))
 							break;
-						graph.addEdge(i+"_"+j+"_"+i+"_"+(j+k)+"_est", i+"_"+j+"_est", i+"_"+(j+k)+"_est",true).addAttribute("temps", 1);;
+						graph.addEdge("a"+k+"_"+i+"_"+j+"_"+i+"_"+(j+k)+"_est", i+"_"+j+"_est", i+"_"+(j+k)+"_est",true).addAttribute("temps", 1);;
 					}
 					//Traitement Ouest
 					for(int k = 1;k<=3 && (j-k)>=0;k++){
 						if(graph.getNode(i+"_"+(j-k)+"_ouest").getAttribute("stat").equals("unallowed"))
 							break;
-						graph.addEdge(i+"_"+j+"_"+i+"_"+(j-k)+"_ouest", i+"_"+j+"_ouest", i+"_"+(j-k)+"_ouest",true).addAttribute("temps", 1);;
+						graph.addEdge("a"+k+"_"+i+"_"+j+"_"+i+"_"+(j-k)+"_ouest", i+"_"+j+"_ouest", i+"_"+(j-k)+"_ouest",true).addAttribute("temps", 1);;
 					}
 					//Traitement Nord
 					for(int k = 1;k<=3 && (i-k)>=0;k++){
 						if(graph.getNode((i-k)+"_"+j+"_nord").getAttribute("stat").equals("unallowed"))
 							break;
-						graph.addEdge(i+"_"+j+"_"+(i-k)+"_"+j+"_nord", i+"_"+j+"_nord", (i-k)+"_"+j+"_nord",true).addAttribute("temps", 1);;
+						graph.addEdge("a"+k+"_"+i+"_"+j+"_"+(i-k)+"_"+j+"_nord", i+"_"+j+"_nord", (i-k)+"_"+j+"_nord",true).addAttribute("temps", 1);;
 					}
 					//Traitement Sud
 					for(int k = 1;k<=3 && (i+k)<preGraph.length;k++){
 						if(graph.getNode((i+k)+"_"+j+"_sud").getAttribute("stat").equals("unallowed"))
 							break;
-						graph.addEdge(i+"_"+j+"_"+(i+k)+"_"+j+"_sud", i+"_"+j+"_sud", (i+k)+"_"+j+"_sud",true).addAttribute("temps", 1);;
+						graph.addEdge("a"+k+"_"+i+"_"+j+"_"+(i+k)+"_"+j+"_sud", i+"_"+j+"_sud", (i+k)+"_"+j+"_sud",true).addAttribute("temps", 1);;
 					}
-					graph.addEdge(i+"_"+j+"_ne", i+"_"+j+"_nord", i+"_"+j+"_est",true).addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_no", i+"_"+j+"_nord", i+"_"+j+"_ouest",true).addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_se", i+"_"+j+"_sud", i+"_"+j+"_est",true).addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_so", i+"_"+j+"_sud", i+"_"+j+"_ouest",true).addAttribute("temps", 1);
+					graph.addEdge("D_"+i+"_"+j+"_ne", i+"_"+j+"_nord", i+"_"+j+"_est",true).addAttribute("temps", 1);
+					graph.addEdge("G_"+i+"_"+j+"_no", i+"_"+j+"_nord", i+"_"+j+"_ouest",true).addAttribute("temps", 1);
+					graph.addEdge("G_"+i+"_"+j+"_se", i+"_"+j+"_sud", i+"_"+j+"_est",true).addAttribute("temps", 1);
+					graph.addEdge("D_"+i+"_"+j+"_so", i+"_"+j+"_sud", i+"_"+j+"_ouest",true).addAttribute("temps", 1);
 					
-					graph.addEdge(i+"_"+j+"_en", i+"_"+j+"_est", i+"_"+j+"_nord", true).addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_on", i+"_"+j+"_ouest", i+"_"+j+"_nord",true).addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_es", i+"_"+j+"_est",i+"_"+j+"_sud", true).addAttribute("temps", 1);
-					graph.addEdge(i+"_"+j+"_os", i+"_"+j+"_ouest", i+"_"+j+"_sud",true).addAttribute("temps", 1);
+					graph.addEdge("G_"+i+"_"+j+"_en", i+"_"+j+"_est", i+"_"+j+"_nord", true).addAttribute("temps", 1);
+					graph.addEdge("D_"+i+"_"+j+"_on", i+"_"+j+"_ouest", i+"_"+j+"_nord",true).addAttribute("temps", 1);
+					graph.addEdge("D_"+i+"_"+j+"_es", i+"_"+j+"_est",i+"_"+j+"_sud", true).addAttribute("temps", 1);
+					graph.addEdge("G_"+i+"_"+j+"_os", i+"_"+j+"_ouest", i+"_"+j+"_sud",true).addAttribute("temps", 1);
 				}
 							
 			}
@@ -120,13 +121,15 @@ public class Graphe {
         return dijkstra.getPath(graph.getNode(dest)).toString();*/
         
         String dest = instance.getRobot().getObjectif().x+"_"+instance.getRobot().getObjectif().y+"_"+instance.getRobot().getDirection();
+        System.out.println("Dest : "+dest);
+        instance.setSolution(bfs.getPath(graph.getNode(dest)));
         return bfs.getPath(graph.getNode(dest));
 	}
 	
 	public void graphDisplay(){
         for (Node n : graph)
             n.addAttribute("label", n.getId());
-		graph.display(false);
+		graph.display(false).getDefaultView().getCamera().setViewRotation(90);
 	}
 	
 	private int[][] matToPreGraph(int[][] mat) {

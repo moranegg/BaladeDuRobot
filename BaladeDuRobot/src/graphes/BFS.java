@@ -96,19 +96,43 @@ public class BFS {
 	
 	public String getPath(Node destination){
 		List<Node> path= new LinkedList<Node>();
-		
+		List<String> pathedges= new LinkedList<String>();
+
 		Node u = parent.get(destination);
-		
+		path.add(destination);
 		while(u != source){
 			path.add(0 ,u);
 			u = parent.get(u);
 		}
-
+		//Conversion format exercice (A séparer du reste)
+		pathedges.add(source.getEdgeBetween(path.get(0)).toString().split("_")[0]);
+		source.getEdgeBetween(path.get(0)).addAttribute("ui.style", "fill-color: blue;");
+		source.getEdgeBetween(path.get(0)).addAttribute("ui.style", "size: 4;");
+		for(int i = 0;i<path.size()-1;i++){
+			path.get(i).getEdgeBetween(path.get(i+1)).addAttribute("ui.style", "fill-color: blue;");
+			path.get(i).getEdgeBetween(path.get(i+1)).addAttribute("ui.style", "size: 4;");
+			pathedges.add(path.get(i).getEdgeBetween(path.get(i+1)).toString().split("_")[0]);
+		}
 		
-		return path.toString(); 
+		//Retrait des artéfacts de rotations en fin de parcours
+		while(pathedges.get(pathedges.size()-1).toString().equals("D") || pathedges.get(pathedges.size()-1).toString().equals("G")){
+			pathedges.remove(pathedges.size()-1);
+			path.remove(path.size()-1);
+		}
+		
+		for(Node node : path){
+			graph.getNode(node.toString()).addAttribute("ui.style", "fill-color: blue;");
+		}
+		
+		graph.getNode(source.toString()).addAttribute("ui.style", "fill-color: green;");
+		graph.getNode(path.get(path.size()-1).toString()).addAttribute("ui.style", "fill-color: green;");
+		
+		//Ajouts du temps
+		pathedges.add(0 ,String.valueOf(pathedges.size()));
+		
+		//Changements couleurs du parcours
+		
+		return pathedges.toString(); 
 	}
-	
-	
-	
 	
 }
