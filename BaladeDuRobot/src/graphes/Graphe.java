@@ -64,7 +64,7 @@ public class Graphe {
 	}
 	
 	private void addNodes(int[][] preGraph){
-		int offset = 4;
+		int offset = 10;
 		for (int i=0 ; i<preGraph.length; i++){
 			for (int j=0 ; j<preGraph[0].length; j++){					
 				graph.addNode(i+"_"+j+"_nord").addAttribute("xy", 0+i*offset, 1+j*offset);
@@ -127,8 +127,7 @@ public class Graphe {
 	}
 	
 	public void graphDisplay(){
-        for (Node n : graph)
-            n.addAttribute("label", n.getId());
+        
 		graph.display(false).getDefaultView().getCamera().setViewRotation(90);
 	}
 	
