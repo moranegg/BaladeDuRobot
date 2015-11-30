@@ -92,12 +92,31 @@ public class Graphe {
 				}
 			}
 		}
+		//Obstacles cosmétiques :
+		
+		int[][] mat = instance.getEntrepot().getMatrice();
+		for (int i=0 ; i<mat.length; i++){
+			for (int j=0 ; j<mat[0].length; j++){	
+				graph.addNode("obstacle_"+i+"_"+j).addAttribute("xy", i*offset+offset/2+1, j*offset+offset/2+1);
+				if(mat[i][j] == 1){
+
+
+					graph.getNode("obstacle_"+i+"_"+j).addAttribute("ui.style", "shape: box;size: 40, 40;");
+					//graph.getNode("obstacle_"+i+"_"+j).addAttribute("ui.style");
+
+				}
+				else{
+					graph.getNode("obstacle_"+i+"_"+j).addAttribute("ui.style", "shape: box;size: 40, 40;fill-color:white;stroke-mode: plain;");
+				}
+			}
+		}
 		
 	}
 	public void graphGenerate(){
 		int[][] preGraph = matToPreGraph(instance.getEntrepot().getMatrice());
 		addNodes(preGraph);
 		addEdges(preGraph);
+
 	}
 	
 	public String pathCompute(){
@@ -127,11 +146,12 @@ public class Graphe {
 	}
 	
 	public void graphDisplay(){
-        
+		System.setProperty("org.graphstream.ui.renderer",
+                "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		graph.display(false).getDefaultView().getCamera().setViewRotation(90);
 	}
 	
-	private int[][] matToPreGraph(int[][] mat) {
+	public  int[][] matToPreGraph(int[][] mat) {
 		int[][] preGraph=new int[mat.length+1][];
 		for (int i=0 ; i<preGraph.length; i++)
 			preGraph[i]=new int[mat[0].length+1];
@@ -148,12 +168,12 @@ public class Graphe {
 			}
 		}
 		
-		for (int i=0 ; i<preGraph.length; i++){
+		/*for (int i=0 ; i<preGraph.length; i++){
 			for (int j=0 ; j<preGraph[0].length; j++){
 				System.out.print(preGraph[i][j]+" ");
 			}
 			System.out.println();
-		}
+		}*/
 		
 		return preGraph;
 	}

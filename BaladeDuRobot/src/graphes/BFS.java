@@ -88,7 +88,7 @@ public class BFS {
 		
 		//Debug tab data
 		for(Node node : graph.getEachNode()) {
-			System.out.println("Key : "+node+" dist : "+distance.get(node)+" parent : "+parent.get(node));
+			//System.out.println("Key : "+node+" dist : "+distance.get(node)+" parent : "+parent.get(node));
 	
 		}
 		
@@ -99,58 +99,77 @@ public class BFS {
 		
 		List<Node> path= new LinkedList<Node>();
 		List<String> pathedges= new LinkedList<String>();
+		boolean nopath = false;
 
-		//Constructions noeuds solution
-			Node u = parent.get(destination);
-			path.add(destination);
-			while(u != source){
-				path.add(0 ,u);
-				u = parent.get(u);
-			}
-		
-		//Construction arcs solutions 
-			pathedges.add(source.getEdgeBetween(path.get(0)).toString());
-			for(int i = 0;i<path.size()-1;i++){
-				
-				pathedges.add(path.get(i).getEdgeBetween(path.get(i+1)).toString());
-			}
+
+		if(distance.get(destination) == -1){
+			nopath = true;
+		}
+		if(source.equals(destination))
+		{
+			pathedges.add("0");
+		}
+		if(!nopath){
+			//Constructions noeuds solution
+				Node u = parent.get(destination);
+				path.add(destination);
+				while(u != source){
+					path.add(0 ,u);
+					u = parent.get(u);
+	
+				}
+			//Construction arcs solutions 
+				pathedges.add(source.getEdgeBetween(path.get(0)).toString());
+				for(int i = 0;i<path.size()-1;i++){
 					
-		//Retrait des artéfacts de rotations en fin de parcours
-			while(pathedges.get(pathedges.size()-1).split("_")[0].equals("D") || pathedges.get(pathedges.size()-1).split("_")[0].equals("G")){
-				pathedges.remove(pathedges.size()-1);
-				path.remove(path.size()-1);
-			}
-		
-		//Reglages pour display
-			for (Node n : path)
-	            n.addAttribute("label", n.getId());
+					pathedges.add(path.get(i).getEdgeBetween(path.get(i+1)).toString());
+				}
+						
+			//Retrait des artéfacts de rotations en fin de parcours
+				while(pathedges.get(pathedges.size()-1).split("_")[0].equals("D") || pathedges.get(pathedges.size()-1).split("_")[0].equals("G")){
+					pathedges.remove(pathedges.size()-1);
+					path.remove(path.size()-1);
+				}
 			
-		//Coloration des arcs
-			source.getEdgeBetween(path.get(0)).addAttribute("ui.style", "fill-color: blue;");
-			source.getEdgeBetween(path.get(0)).addAttribute("ui.style", "size: 4;");
-			for(int i = 0;i<path.size()-1;i++){
-				path.get(i).getEdgeBetween(path.get(i+1)).addAttribute("ui.style", "fill-color: blue;");
-				path.get(i).getEdgeBetween(path.get(i+1)).addAttribute("ui.style", "size: 4;");
-			}
+			//Reglages pour display
+				source.addAttribute("label", source.getId());
+				for (Node n : path)
+		            n.addAttribute("label", n.getId());
+				
+			//Coloration des arcs
+				source.getEdgeBetween(path.get(0)).addAttribute("ui.style", "fill-color: blue;");
+				source.getEdgeBetween(path.get(0)).addAttribute("ui.style", "size: 4;");
+				for(int i = 0;i<path.size()-1;i++){
+					path.get(i).getEdgeBetween(path.get(i+1)).addAttribute("ui.style", "fill-color: blue;");
+					path.get(i).getEdgeBetween(path.get(i+1)).addAttribute("ui.style", "size: 4;");
+				}
+			//Conversion format exercice
+				for(int i = 0;i<pathedges.size();i++){
+					pathedges.set(i,pathedges.get(i).split("_")[0]);
+				}
+			
+			//Ajouts du temps
+				pathedges.add(0 ,String.valueOf(pathedges.size()));
+				
+			//Coloration des noeuds
+				for(Node node : path){
+					graph.getNode(node.toString()).addAttribute("ui.style", "fill-color: blue;");
+					graph.getNode(node.toString()).addAttribute("ui.style", "size: 15;");
+				}	
 
-		//Coloration des noeuds
-			for(Node node : path){
-				graph.getNode(node.toString()).addAttribute("ui.style", "fill-color: blue;");
-				graph.getNode(node.toString()).addAttribute("ui.style", "size: 15;");
-			}	
-			graph.getNode(source.toString()).addAttribute("ui.style", "fill-color: green;");
-			graph.getNode(source.toString()).addAttribute("ui.style", "size: 15;");
+				graph.getNode(path.get(path.size()-1).toString()).addAttribute("ui.style", "fill-color: green;");
+				graph.getNode(path.get(path.size()-1).toString()).addAttribute("ui.style", "size: 15;");
+			
+		}
+		else{
+			pathedges.add("-1");
+			graph.getNode(destination.toString()).addAttribute("ui.style", "fill-color: green;");
+			graph.getNode(destination.toString()).addAttribute("ui.style", "size: 15;");
+		}
 
-			graph.getNode(path.get(path.size()-1).toString()).addAttribute("ui.style", "fill-color: green;");
-			graph.getNode(path.get(path.size()-1).toString()).addAttribute("ui.style", "size: 15;");
-			
-		//Conversion format exercice
-			for(int i = 0;i<pathedges.size();i++){
-				pathedges.set(i,pathedges.get(i).split("_")[0]);
-			}
-			
-		//Ajouts du temps
-			pathedges.add(0 ,String.valueOf(pathedges.size()));
+		graph.getNode(source.toString()).addAttribute("ui.style", "fill-color: green;");
+		graph.getNode(source.toString()).addAttribute("ui.style", "size: 15;");
+
 		
 		
 		return pathedges.toString(); 

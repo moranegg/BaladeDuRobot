@@ -14,17 +14,12 @@ import org.junit.Test;
 import fichiers.Fichier;
 import graphes.Graphe;
 
-public class TestGraphe {
+public class TestInstance {
 		
 	public static void main (String[] args){
-
-		//Fichier fichier = new Fichier("Samples/uc003-test.txt");    
-		//Instance i = fichier.interpretationFichier();
-		Instance i = new Instance(15,10,10);
-		Graphe graph = new Graphe(i);
-		graph.graphGenerate();
-		graph.graphDisplay();
-		System.out.println(graph.pathCompute());
+		for(int i = 0;i<100000;i++){
+			Instance j = new Instance(24,10,10);
+		}
 
 
 	}
