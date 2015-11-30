@@ -44,8 +44,13 @@ import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
 public class Test {
 
@@ -56,7 +61,9 @@ public class Test {
 	private JSpinner lng;
 	private JSpinner lag;
 	private JPanel grille;
-
+	private JLabel lbmax;
+	private JLabel lbcur;
+	private List<Freegfx> squareList = new LinkedList<Freegfx>();
 	/**
 	 * Launch the application.
 	 */
@@ -81,11 +88,9 @@ public class Test {
 		DrawGrille();
 	}
 	
-	public void DrawGrille(){
+	public void ResizeGrille(){
 		int ln = (int) lng.getValue(); 
 		int la = (int) lag.getValue(); 
-		grille.removeAll();
-		grille.setLayout(null);
 		
 		int height = grille.getHeight();
 		int width = grille.getWidth();
@@ -98,12 +103,53 @@ public class Test {
 		else
 			sx=sy;
 		
+		for(Freegfx gfx :  squareList){
+				gfx.setBounds(gfx.getposX()*sx+5, gfx.getposY()*sy+5,  sx, sy);
+				gfx.setImgSize(sx, sy);
+
+		}
+		grille.repaint();
+	}
+	
+	public void DrawGrille(){
+		int ln = (int) lng.getValue(); 
+		int la = (int) lag.getValue(); 
+		grille.removeAll();
+		grille.setLayout(null);
+		lbcur.setText("0");
+		
+		int height = grille.getHeight();
+		int width = grille.getWidth();
+		
+		int sx = (width-10)/ln;
+		int sy = (height-10)/la;
+		
+		if(sx < sy)
+			sy = sx;
+		else
+			sx=sy;
+		squareList.clear();
 		for(int i = 0;i<ln;i++){
 			for(int j = 0;j<la;j++){
 				Freegfx btn = new Freegfx(i,j);
+				squareList.add(btn);
 				btn.setBounds(i*sx+5, j*sy+5,  sx, sy);
 				btn.setImgSize(sx, sy);
 				grille.add(btn);
+				btn.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						
+						
+						if(Integer.parseInt(lbcur.getText()) < Integer.parseInt(lbmax.getText()) || ((Freegfx)arg0.getComponent()).isState()){
+							int sol = ((Freegfx)arg0.getComponent()).change();
+							lbcur.setText(String.valueOf(Integer.parseInt(lbcur.getText())+sol));
+							((Freegfx)arg0.getComponent()).repaint();
+						}
+						
+						
+					}
+				});
 			}
 		}
 		grille.repaint();
@@ -113,15 +159,16 @@ public class Test {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				
-				DrawGrille();
+				ResizeGrille();
 			}
 		});
-		frame.setBounds(100, 100, 530, 398);
+		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -141,7 +188,6 @@ public class Test {
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
 		JPanel panel = new JPanel();
-
 		frame.getContentPane().add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		
@@ -176,9 +222,17 @@ public class Test {
 		lblEntrepot.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel_3.add(lblEntrepot);
 		
+		JPanel panel_2 = new JPanel();
+		panel_3.add(panel_2);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
+		
+		JLabel lblNewLabel = new JLabel("Dimensions");
+		lblNewLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panel_2.add(lblNewLabel);
+		
 		JPanel panel_4 = new JPanel();
-		panel_3.add(panel_4);
-		panel_4.setLayout(new GridLayout(3, 2, 0, 0));
+		panel_2.add(panel_4);
+		panel_4.setLayout(new GridLayout(2, 2, 0, 0));
 		
 		JLabel lblLongueur = new JLabel("Longueur :");
 		panel_4.add(lblLongueur);
@@ -194,15 +248,37 @@ public class Test {
 		lag = new JSpinner();
 		lag.setModel(new SpinnerNumberModel(10, 1, 50, 1));
 		panel_4.add(lag);
-		
-		JLabel lblObstacles = new JLabel("Obstacles :");
-		panel_4.add(lblObstacles);
-		
-		JSpinner obs = new JSpinner();
 		maxObs = (Integer)lag.getValue()*(Integer)lng.getValue()/4;
+		
+		JLabel lblNewLabel_1 = new JLabel("Obstacles :");
+		lblNewLabel_1.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panel_2.add(lblNewLabel_1);
+		
+		JPanel panel_7 = new JPanel();
+		panel_2.add(panel_7);
+		panel_7.setLayout(new GridLayout(3, 2, 0, 0));
+		
+		JLabel lblObstacles = new JLabel("Maximum :");
+		panel_7.add(lblObstacles);
+				
+				lbmax = new JLabel(""+maxObs);
+				panel_7.add(lbmax);
+				
+				JLabel lbcurzefzef = new JLabel("Courant :");
+				panel_7.add(lbcurzefzef);
+				
+				lbcur = new JLabel("0");
+				panel_7.add(lbcur);
+				
+				JLabel lblNewLabel_3 = new JLabel("Limite :");
+				panel_7.add(lblNewLabel_3);
+				
+				JSpinner obs = new JSpinner();
+				panel_7.add(obs);
 
-		obs.setModel(new SpinnerNumberModel(0, 0, maxObs, 1));
-		panel_4.add(obs);
+		
+				
+		
 		
 		JLabel lblRobot = new JLabel("Robot :");
 		lblRobot.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -216,11 +292,14 @@ public class Test {
 		panel_3.add(panel_5);
 		panel_5.setLayout(new GridLayout(3, 2, 0, 0));
 		
+		maxX = (Integer)lng.getValue();
+		maxY = (Integer)lag.getValue();
+		maxObs = (Integer)lag.getValue()*(Integer)lng.getValue()/4;
+		
 		JLabel lblX = new JLabel("X :");
 		panel_5.add(lblX);
 		
 		JSpinner rdx = new JSpinner();
-		maxX = (Integer)lng.getValue();
 		rdx.setModel(new SpinnerNumberModel(0, 0, maxX, 1));
 		panel_5.add(rdx);
 		
@@ -228,7 +307,6 @@ public class Test {
 		panel_5.add(lblY);
 		
 		JSpinner rdy = new JSpinner();
-		maxY = (Integer)lng.getValue();
 		rdy.setModel(new SpinnerNumberModel(0, 0, maxY, 1));
 		panel_5.add(rdy);
 		
@@ -278,139 +356,78 @@ public class Test {
 	    tf = ((JSpinner.DefaultEditor) rdy.getEditor()).getTextField();
 	    tf.setEditable(false);
 	    tf.setBackground(Color.white);
+	    tf = ((JSpinner.DefaultEditor) obs.getEditor()).getTextField();
+	    tf.setEditable(false);
+	    tf.setBackground(Color.white);
 	    tf = ((JSpinner.DefaultEditor) lng.getEditor()).getTextField();
 	    tf.setEditable(false);
 	    tf.setBackground(Color.white);
 	    tf = ((JSpinner.DefaultEditor) lag.getEditor()).getTextField();
 	    tf.setEditable(false);
 	    tf.setBackground(Color.white);
-	    tf = ((JSpinner.DefaultEditor) obs.getEditor()).getTextField();
-	    tf.setEditable(false);
-	    tf.setBackground(Color.white);
 	    
-	    
-		//Listeners
-		lng.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				maxObs = (Integer)lag.getValue()*(Integer)lng.getValue()/4;
-				maxX = (Integer)lng.getValue();
-				int curdx = (int) rdx.getValue(); 
-				int curox = (int) rox.getValue(); 
-				int curobs = (int) obs.getValue(); 
+	  //Listeners
+	  		lng.addChangeListener(new ChangeListener() {
+	  			public void stateChanged(ChangeEvent arg0) {
+	  				maxObs = (Integer)lag.getValue()*(Integer)lng.getValue()/4;
+	  				maxX = (Integer)lng.getValue();
+	  				int curdx = (int) rdx.getValue(); 
+	  				int curox = (int) rox.getValue(); 
+	  				int curobs = (int) obs.getValue(); 
 
-				if(maxX < curdx)
-					curdx = maxX;
-				if(maxX < curox)
-					curox = maxX;
-				if(maxObs < curobs)
-					curobs = maxObs;
-				rdx.setModel(new SpinnerNumberModel(curdx, 0, maxX, 1));
-				rox.setModel(new SpinnerNumberModel(curox, 0, maxX, 1));
-				obs.setModel(new SpinnerNumberModel(curobs, 0, maxObs, 1));
-				JFormattedTextField tf = ((JSpinner.DefaultEditor) rdx.getEditor()).getTextField();
-			    tf.setEditable(false);
-			    tf.setBackground(Color.white);
-				tf = ((JSpinner.DefaultEditor) rox.getEditor()).getTextField();
-			    tf.setEditable(false);
-			    tf.setBackground(Color.white);
-				tf = ((JSpinner.DefaultEditor) obs.getEditor()).getTextField();
-			    tf.setEditable(false);
-			    tf.setBackground(Color.white);
-			    
-			    DrawGrille();
-			}
-		});
-		lag.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				maxObs = (Integer)lag.getValue()*(Integer)lng.getValue()/4;
-				maxY = (Integer)lag.getValue();
-				int curdy = (int) rdy.getValue(); 
-				int curoy = (int) roy.getValue(); 
-				int curobs = (int) obs.getValue(); 
-				if(maxY < curdy)
-					curdy = maxY;
-				if(maxY < curoy)
-					curoy = maxY;
-				if(maxObs < curobs)
-					curobs = maxObs;
-				rdy.setModel(new SpinnerNumberModel(curdy, 0, maxY, 1));
-				roy.setModel(new SpinnerNumberModel(curoy, 0, maxY, 1));
-				obs.setModel(new SpinnerNumberModel(curobs, 0, maxObs, 1));
-				JFormattedTextField tf = ((JSpinner.DefaultEditor) rdy.getEditor()).getTextField();
-			    tf.setEditable(false);
-			    tf.setBackground(Color.white);
-				tf = ((JSpinner.DefaultEditor) roy.getEditor()).getTextField();
-			    tf.setEditable(false);
-			    tf.setBackground(Color.white);
-				tf = ((JSpinner.DefaultEditor) obs.getEditor()).getTextField();
-			    tf.setEditable(false);
-			    tf.setBackground(Color.white);
-			    
-			    DrawGrille();
-			}
-		});
-		grille.addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				/*int ln = (int) lng.getValue(); 
-				int la = (int) lag.getValue(); 
-				System.out.println("x : "+e.getX()+" y : "+e.getY()+"maxX :"+e.getComponent().getHeight()+"maxX :"+e.getComponent().getWidth());
-				((JPanel)e.getComponent()).removeAll();
-				((JPanel)e.getComponent()).setLayout(null);
-				
-				int height = e.getComponent().getHeight();
-				int width = e.getComponent().getWidth();
-				
-				int sx = (width-10)/ln;
-				int sy = (height-10)/la;
-				
-				if(sx < sy)
-					sy = sx;
-				else
-					sx=sy;
-				
-				for(int i = 0;i<ln;i++){
-					for(int j = 0;j<la;j++){
-						Freegfx btn = new Freegfx(i,j);
-						//btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-						btn.setBounds(i*sx+5, j*sy+5,  sx, sy);
-						btn.setImgSize(sx, sy);
-						((JPanel)e.getComponent()).add(btn);
-					}
-				}
-				e.getComponent().repaint();
-				
-				DrawGrille();*/
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-
- 
-        });
+	  				if(maxX < curdx)
+	  					curdx = maxX;
+	  				if(maxX < curox)
+	  					curox = maxX;
+	  				if(maxObs < curobs)
+	  					curobs = maxObs;
+	  				
+	  				lbmax.setText(""+maxObs);
+	  				rdx.setModel(new SpinnerNumberModel(curdx, 0, maxX, 1));
+	  				rox.setModel(new SpinnerNumberModel(curox, 0, maxX, 1));
+	  				obs.setModel(new SpinnerNumberModel(curobs, 0, maxObs, 1));
+	  				JFormattedTextField tf = ((JSpinner.DefaultEditor) rdx.getEditor()).getTextField();
+	  			    tf.setEditable(false);
+	  			    tf.setBackground(Color.white);
+	  				tf = ((JSpinner.DefaultEditor) rox.getEditor()).getTextField();
+	  			    tf.setEditable(false);
+	  			    tf.setBackground(Color.white);
+	  				tf = ((JSpinner.DefaultEditor) obs.getEditor()).getTextField();
+	  			    tf.setEditable(false);
+	  			    tf.setBackground(Color.white);
+	  			    
+	  			    DrawGrille();
+	  			}
+	  		});
+	  		lag.addChangeListener(new ChangeListener() {
+	  			public void stateChanged(ChangeEvent e) {
+	  				maxObs = (Integer)lag.getValue()*(Integer)lng.getValue()/4;
+	  				maxY = (Integer)lag.getValue();
+	  				int curdy = (int) rdy.getValue(); 
+	  				int curoy = (int) roy.getValue(); 
+	  				int curobs = (int) obs.getValue(); 
+	  				if(maxY < curdy)
+	  					curdy = maxY;
+	  				if(maxY < curoy)
+	  					curoy = maxY;
+	  				if(maxObs < curobs)
+	  					curobs = maxObs;
+	  				lbmax.setText(""+maxObs);
+	  				rdy.setModel(new SpinnerNumberModel(curdy, 0, maxY, 1));
+	  				roy.setModel(new SpinnerNumberModel(curoy, 0, maxY, 1));
+	  				obs.setModel(new SpinnerNumberModel(curobs, 0, maxObs, 1));
+	  				JFormattedTextField tf = ((JSpinner.DefaultEditor) rdy.getEditor()).getTextField();
+	  			    tf.setEditable(false);
+	  			    tf.setBackground(Color.white);
+	  				tf = ((JSpinner.DefaultEditor) roy.getEditor()).getTextField();
+	  			    tf.setEditable(false);
+	  			    tf.setBackground(Color.white);
+	  				tf = ((JSpinner.DefaultEditor) obs.getEditor()).getTextField();
+	  			    tf.setEditable(false);
+	  			    tf.setBackground(Color.white);
+	  			    
+	  			    DrawGrille();
+	  			}
+	  		});
 	}
 }
