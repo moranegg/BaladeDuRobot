@@ -6,6 +6,7 @@ import metier.Robot;
 import org.graphstream.algorithm.Dijkstra;
 import org.graphstream.graph.*;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.ui.view.Viewer;
 
 public class Graphe {
 	private Instance instance;
@@ -14,6 +15,7 @@ public class Graphe {
 	public Graphe(Instance instance){
 		this.instance = instance;
 		this.graph = new SingleGraph("BaladeDuRobot");
+		
 		
 	}
 	
@@ -148,7 +150,9 @@ public class Graphe {
 	public void graphDisplay(){
 		System.setProperty("org.graphstream.ui.renderer",
                 "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-		graph.display(false).getDefaultView().getCamera().setViewRotation(90);
+		Viewer v = graph.display(false);
+		v.getDefaultView().getCamera().setViewRotation(90);
+		v.setCloseFramePolicy(Viewer.CloseFramePolicy.CLOSE_VIEWER);
 	}
 	
 	public  int[][] matToPreGraph(int[][] mat) {

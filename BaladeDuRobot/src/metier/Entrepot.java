@@ -22,6 +22,15 @@ public class Entrepot {
 		return longueur;
 	}
 
+	public void setMatrice(int[][] matrice) {
+		this.matrice = matrice;
+	}
+	public void setLongueur(int longueur) {
+		this.longueur = longueur;
+	}
+	public void setLargeur(int largeur) {
+		this.largeur = largeur;
+	}
 	public int getLargeur() {
 		return largeur;
 	}
