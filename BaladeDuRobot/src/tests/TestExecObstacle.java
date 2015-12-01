@@ -13,15 +13,19 @@ import org.junit.Test;
 
 import fichiers.Fichier;
 import graphes.Graphe;
-
-public class TestGraphe {
+/**
+ * 
+ * Test en fonction du nombre d'obstacle
+ *
+ */
+public class TestExecObstacle {
 		
 	public static void main (String[] args){
 		long [][] durationTotal = new long [5][10];
 		long [] moyenne = new long [5];
 		
 		for(int i=0; i<10; i++){
-			Instance i10 = new Instance(10,10,10);
+			Instance i10 = new Instance(20,20,10);
 			
 			Graphe graph10 = new Graphe(i10);
 			long startTime = System.nanoTime();
@@ -46,7 +50,7 @@ public class TestGraphe {
 			System.out.println("instance 20x20\t"+duration/1000000 + "ms");
 			durationTotal[1][i]= duration;
 			/***************/
-			Instance i30 = new Instance(30,30,30);
+			Instance i30 = new Instance(20,20,30);
 			
 			Graphe graph30 = new Graphe(i30);
 			startTime = System.nanoTime();
@@ -58,7 +62,7 @@ public class TestGraphe {
 			//System.out.println("instance 30x30\t"+duration/1000000 + "ms");
 			durationTotal[2][i]= duration;
 			/***************/
-			Instance i40 = new Instance(40,40,40);
+			Instance i40 = new Instance(20,20,40);
 			
 			Graphe graph40 = new Graphe(i40);
 			startTime = System.nanoTime();
@@ -70,7 +74,7 @@ public class TestGraphe {
 			System.out.println("instance 40x40\t"+duration/1000000 + "ms");
 			durationTotal[3][i]= duration;
 			/***************/
-			Instance i50 = new Instance(50,50,50);
+			Instance i50 = new Instance(20,20,50);
 			
 			Graphe graph50 = new Graphe(i50);
 			startTime = System.nanoTime();
@@ -87,10 +91,10 @@ public class TestGraphe {
 			long total=0;
 			for(int j=0;j<10;j++){
 				total+= durationTotal[i][j];
-				System.out.print("duration"+ j+":"+durationTotal[i][j]/1000000 + "ms /");
+				System.out.print(""+durationTotal[i][j]/1000000 + ",");
 			}
 			moyenne[i]=total/10;
-			System.out.println("\ninstance "+ i+"moyenne"+moyenne[i]/1000000 + "ms");
+			System.out.println(""+(double)moyenne[i]/1000000 + "!");
 			
 		}
 
